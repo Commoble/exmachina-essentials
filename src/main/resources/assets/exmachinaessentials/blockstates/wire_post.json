@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "facing=down":  { "model": "exmachinaessentials:block/wire_post"},
+        "facing=up":    { "model": "exmachinaessentials:block/wire_post", "x": 180},
+        "facing=north": { "model": "exmachinaessentials:block/wire_post", "x": 270},
+        "facing=south": { "model": "exmachinaessentials:block/wire_post", "x": 90},
+        "facing=west":  { "model": "exmachinaessentials:block/wire_post", "x": 90, "y": 90},
+        "facing=east":  { "model": "exmachinaessentials:block/wire_post", "x": 90, "y": 270}
+    }
+}

@@ -81,7 +81,7 @@ public class ExMachinaEssentials
 		
 		IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 		IEventBus forgeBus = MinecraftForge.EVENT_BUS;
-		
+
 		this.serverConfig = ConfigHelper.register(Type.SERVER, ServerConfig::new);
 		
 		// subscribe events to mod bus -- registries and other init events, mostly

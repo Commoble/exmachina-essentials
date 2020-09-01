@@ -1,5 +1,8 @@
 package commoble.exmachinaessentials.content;
 
+import commoble.exmachina.api.Circuit;
+import commoble.exmachina.api.CircuitManager;
+import commoble.exmachina.api.CircuitManagerCapability;
 import commoble.exmachinaessentials.util.EngineeringNotation;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;

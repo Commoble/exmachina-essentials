@@ -1,0 +1,24 @@
+{
+    "forge_marker": 1,
+    "defaults":
+    {
+        "textures":
+        {
+            "all": "exmachinaessentials:blocks/ash"
+        },
+        "model": "cube_all",
+        "uvlock": true
+    },
+    "variants":
+    {
+        "layers=1":  [{ "model": "exmachinaessentials:ash_height2" }],
+        "layers=2":  [{ "model": "exmachinaessentials:ash_height4" }],
+        "layers=3":  [{ "model": "exmachinaessentials:ash_height6" }],
+        "layers=4":  [{ "model": "exmachinaessentials:ash_height8" }],
+        "layers=5":  [{ "model": "exmachinaessentials:ash_height10" }],
+        "layers=6":  [{ "model": "exmachinaessentials:ash_height12" }],
+        "layers=7":  [{ "model": "exmachinaessentials:ash_height14" }],
+        "layers=8":  [{ "model": "cube_all" }],
+        "inventory": [{}]
+    }
+}

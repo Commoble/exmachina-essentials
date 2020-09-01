@@ -18,8 +18,8 @@ public class TileEntityRegistrar
 	public static final DeferredRegister<TileEntityType<?>> TYPES = ExMachinaEssentials.createDeferredRegister(ForgeRegistries.TILE_ENTITIES);
 	
 	@SafeVarargs
-	public static final <T extends TileEntity> RegistryObject<TileEntityType<T>>
-		registerType(String name, Supplier<T> factory, Supplier<Block>... blockGetters)
+	public static final <TE extends TileEntity> RegistryObject<TileEntityType<TE>>
+		registerType(String name, Supplier<TE> factory, Supplier<? extends Block>... blockGetters)
 	{
 		return TYPES.register(name, () ->
 			TileEntityType.Builder.create(factory, Arrays.stream(blockGetters).map(Supplier::get).toArray(Block[]::new)).build(null));

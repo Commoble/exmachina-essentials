@@ -1,6 +1,9 @@
 package commoble.exmachinaessentials.content;
 
-import net.java.games.util.plugins.Plugin;
+import commoble.exmachina.api.AutoPlugin;
+import commoble.exmachina.api.Plugin;
+import commoble.exmachina.api.PluginRegistrator;
+import commoble.exmachinaessentials.content.wire_post.WirePostBlock;
 import net.minecraft.util.ResourceLocation;
 
 @AutoPlugin

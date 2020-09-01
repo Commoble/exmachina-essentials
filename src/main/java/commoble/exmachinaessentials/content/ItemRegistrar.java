@@ -31,8 +31,7 @@ public class ItemRegistrar
 	static
 	{
 		registerBlockItem(Names.WIRE_POST, BlockRegistrar.WIRE_POST);
-		registerBlockItem(Names.BATTERY, BlockRegistrar.CURRENT_SOURCE);
-		registerBlockItem(Names.ELECTRIC_FURNACE, BlockRegistrar.ELECTRIC_FURNACE);
+		registerBlockItem(Names.SOLAR_PANEL, BlockRegistrar.SOLAR_PANEL);
 		
 		ITEMS.register(Names.MONDOMETER, () -> new MondometerItem(new Item.Properties().group(CREATIVE_TAB)));
 		ITEMS.register(Names.WIRE_SPOOL, () -> new WireSpoolItem(new Item.Properties().group(CREATIVE_TAB)));

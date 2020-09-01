@@ -15,6 +15,9 @@ public class ClientEvents
 	
 	public static void onClientSetup(FMLClientSetupEvent event)
 	{
+		// block render types
+		
+		// TERs
 		ClientRegistry.bindTileEntityRenderer(TileEntityRegistrar.WIRE_POST.get(), WirePostRenderer::new);
 	}
 }

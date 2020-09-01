@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
+import commoble.exmachina.api.CircuitManagerCapability;
 import commoble.exmachinaessentials.ExMachinaEssentials;
 import commoble.exmachinaessentials.content.TileEntityRegistrar;
 import commoble.exmachinaessentials.util.NBTListCodec;
