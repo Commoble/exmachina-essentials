@@ -231,9 +231,8 @@ public class WirePostBlock extends Block
 		return state.rotate(mirrorIn.toRotation(state.get(DIRECTION_OF_ATTACHMENT)));
 	}
 	
-	public static Set<BlockPos> getPotentialConnections(IWorld world, BlockPos pos)
+	public static Set<BlockPos> getPotentialConnections(IWorld world, BlockPos pos, BlockState state)
 	{
-		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		if (!(block instanceof WirePostBlock))
 		{

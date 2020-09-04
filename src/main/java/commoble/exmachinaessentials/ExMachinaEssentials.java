@@ -13,6 +13,10 @@ import commoble.exmachinaessentials.client.ClientEvents;
 import commoble.exmachinaessentials.content.BlockRegistrar;
 import commoble.exmachinaessentials.content.ItemRegistrar;
 import commoble.exmachinaessentials.content.TileEntityRegistrar;
+import commoble.exmachinaessentials.content.solar_panel.ISolarPanelsInChunk;
+import commoble.exmachinaessentials.content.solar_panel.SolarPanelBlock;
+import commoble.exmachinaessentials.content.solar_panel.SolarPanelsInChunk;
+import commoble.exmachinaessentials.content.solar_panel.SolarPanelsInChunkCapability;
 import commoble.exmachinaessentials.content.wire_post.IPostsInChunk;
 import commoble.exmachinaessentials.content.wire_post.PostsInChunk;
 import commoble.exmachinaessentials.content.wire_post.PostsInChunkCapability;
@@ -37,11 +41,15 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.server.ChunkHolder;
+import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.TickEvent.WorldTickEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -104,6 +112,7 @@ public class ExMachinaEssentials
 		// subscribe events to forge bus -- server init and in-game events
 		forgeBus.addGenericListener(Chunk.class, this::onAttachChunkCapabilities);
 		forgeBus.addListener(EventPriority.LOW, this::checkBlockingWiresOnEntityPlaceBlock);
+		forgeBus.addListener(this::onWorldTick);
 		
 		// subscribe to client events separately so they don't break servers
 		if (FMLEnvironment.dist == Dist.CLIENT)
@@ -125,6 +134,7 @@ public class ExMachinaEssentials
 		
 		// register capabilities
 		CapabilityManager.INSTANCE.register(IPostsInChunk.class, new PostsInChunkCapability.Storage(), PostsInChunk::new);
+		CapabilityManager.INSTANCE.register(ISolarPanelsInChunk.class, new SolarPanelsInChunkCapability.Storage(), SolarPanelsInChunk::new);
 	}
 	
 	private void onAttachChunkCapabilities(AttachCapabilitiesEvent<Chunk> event)
@@ -133,6 +143,9 @@ public class ExMachinaEssentials
 		event.addCapability(getModRL(Names.POSTS_IN_CHUNK), postsInChunk);
 		event.addListener(() -> postsInChunk.holder.invalidate());
 		
+		SolarPanelsInChunk solarPanelsInChunk = new SolarPanelsInChunk();
+		event.addCapability(getModRL(Names.SOLAR_PANELS_IN_CHUNK), solarPanelsInChunk);
+		event.addListener(() -> solarPanelsInChunk.holder.invalidate());
 	}
 	
 	private void checkBlockingWiresOnEntityPlaceBlock(BlockEvent.EntityPlaceEvent event)
@@ -180,6 +193,30 @@ public class ExMachinaEssentials
 							}
 						}
 					});
+				}
+			}
+		}
+	}
+	
+	public void onWorldTick(WorldTickEvent event)
+	{
+		World world = event.world;
+		// update solar panels
+		// tick at end of the tick so light can have been updated
+		// only update on server worlds
+		// don't do this on the debug world as the debug world doesn't tick chunks and blockstates shouldn't update there anyway
+		if (event.phase == TickEvent.Phase.END && world instanceof ServerWorld && !world.isDebugWorld() && world.getGameTime() % this.serverConfig.solar_panel_update_interval.get() == 0)
+		{
+			ServerWorld serverWorld = (ServerWorld)world;
+			ServerChunkProvider serverChunkProvider = serverWorld.getChunkProvider();
+			Iterable<ChunkHolder> loadedChunks = serverChunkProvider.chunkManager.getLoadedChunksIterable();
+			for (ChunkHolder chunkHolder : loadedChunks)
+			{
+				ChunkPos chunkPos = chunkHolder.getPosition();
+				if (serverChunkProvider.isChunkLoaded(chunkPos))
+				{
+					Chunk chunk = serverWorld.getChunk(chunkPos.x, chunkPos.z);
+					chunk.getCapability(SolarPanelsInChunkCapability.INSTANCE).ifPresent(panels -> SolarPanelBlock.tickSolarPanels(panels, serverWorld));
 				}
 			}
 		}

@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 import commoble.exmachinaessentials.ExMachinaEssentials;
 import commoble.exmachinaessentials.Names;
+import commoble.exmachinaessentials.content.solar_panel.SolarPanelBlock;
 import commoble.exmachinaessentials.content.wire_post.WirePostBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;

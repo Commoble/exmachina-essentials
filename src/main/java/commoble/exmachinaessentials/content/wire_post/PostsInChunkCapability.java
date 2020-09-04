@@ -22,7 +22,7 @@ public class PostsInChunkCapability
 	{
 		public static final String POSITIONS = "positions";
 		
-		private static final NBTListCodec<BlockPos, CompoundNBT> POS_LISTER = new NBTListCodec<>(
+		public static final NBTListCodec<BlockPos, CompoundNBT> POS_LISTER = new NBTListCodec<>(
 			POSITIONS,
 			ListNBTType.COMPOUND,
 			NBTUtil::writeBlockPos,

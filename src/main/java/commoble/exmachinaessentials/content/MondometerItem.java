@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class MondometerItem extends Item
 {
-	public static final ITextComponent NO_CIRCUIT_MESSAGE = new TranslationTextComponent("exmachina.mondometer.no_circuit");
+	public static final ITextComponent NO_CIRCUIT_MESSAGE = new TranslationTextComponent("exmachinaessentials.mondometer.no_circuit");
 
 	public MondometerItem(Properties props)
 	{

@@ -12,7 +12,7 @@ public class EssentialsPlugin implements Plugin
 	@Override
 	public void register(PluginRegistrator registry)
 	{
-		registry.registerConnectionType(new ResourceLocation("exmachina:wire_post"), WirePostBlock::getPotentialConnections);
+		registry.registerConnectionType(new ResourceLocation("exmachina:wire_post"), json -> block -> WirePostBlock::getPotentialConnections);
 		
 	}
 

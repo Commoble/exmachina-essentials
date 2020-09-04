@@ -13,4 +13,5 @@ public class Names
 	
 	// capabilities
 	public static final String POSTS_IN_CHUNK = "posts_in_chunk";
+	public static final String SOLAR_PANELS_IN_CHUNK = "solar_panels_in_chunk";
 }
