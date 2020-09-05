@@ -1,10 +1,16 @@
 {
 	"connector": "exmachina:all_directions",
-	"static_load": 10.0,
+	"dynamic_load":
+	{
+		"type": "exmachinaessentials:fall_until_battery_charged",
+		"min": 1,
+		"max": 20.0,
+		"falloff": 0.5
+	},
 	"dynamic_source":
 	{
-		"type": "exmachinaessentials:attenuate_battery",
+		"type": "exmachinaessentials:rise_until_battery_charged",
 		"max": 10.0,
-		"falloff": 0.01
+		"falloff": 0.5
 	}
 }

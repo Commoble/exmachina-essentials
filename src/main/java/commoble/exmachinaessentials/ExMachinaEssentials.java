@@ -155,6 +155,7 @@ public class ExMachinaEssentials
 		BlockState state = event.getState();
 		if (iworld instanceof World && !iworld.isRemote())
 		{
+			@SuppressWarnings("resource")
 			World world = (World)iworld;
 			
 			Set<ChunkPos> chunkPositions = PostsInChunk.getRelevantChunkPositionsNearPos(pos);

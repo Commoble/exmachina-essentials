@@ -107,8 +107,11 @@ public class BatteryBoxTileEntity extends TileEntity implements ITickableTileEnt
 	@Override
 	public void tick()
 	{
-		this.managerHolder.ifPresent(this::tickCircuitManager);
-		if (!this.world.isRemote)System.out.println(this.storedEnergy);
+		if (!this.world.isRemote)
+		{
+			this.managerHolder.ifPresent(this::tickCircuitManager);
+			System.out.println(this.storedEnergy);
+		}
 	}
 	
 	private void tickCircuitManager(CircuitManager manager)

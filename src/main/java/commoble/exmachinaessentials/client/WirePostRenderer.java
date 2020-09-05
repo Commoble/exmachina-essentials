@@ -98,7 +98,6 @@ public class WirePostRenderer extends TileEntityRenderer<WirePostTileEntity>
 						double playerAngleX = MathHelper.sin(playerAngle);
 						double playerAngleZ = MathHelper.cos(playerAngle);
 						double handOffset = handSideID * 0.35D;
-						double d3 = 0.8D;
 						double handX;
 						double handY;
 						double handZ;
