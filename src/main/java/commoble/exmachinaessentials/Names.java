@@ -5,6 +5,7 @@ public class Names
 	// blocks
 	public static final String WIRE_POST = "wire_post";
 	public static final String SOLAR_PANEL = "solar_panel";
+	public static final String BATTERY_BOX = "battery_box";
 	public static final String ELECTRIC_FURNACE = "electric_furnace";
 	
 	// non-block items

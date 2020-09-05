@@ -1,0 +1,10 @@
+{
+	"connector": "exmachina:all_directions",
+	"static_load": 10.0,
+	"dynamic_source":
+	{
+		"type": "exmachinaessentials:attenuate_battery",
+		"max": 10.0,
+		"falloff": 0.01
+	}
+}

@@ -28,10 +28,12 @@ public class ItemRegistrar
 		}
 	};
 	
+	// items we don't need references to
 	static
 	{
 		registerBlockItem(Names.WIRE_POST, BlockRegistrar.WIRE_POST);
 		registerBlockItem(Names.SOLAR_PANEL, BlockRegistrar.SOLAR_PANEL);
+		registerBlockItem(Names.BATTERY_BOX, BlockRegistrar.BATTERY_BOX);
 		
 		ITEMS.register(Names.MONDOMETER, () -> new MondometerItem(new Item.Properties().group(CREATIVE_TAB)));
 		ITEMS.register(Names.WIRE_SPOOL, () -> new WireSpoolItem(new Item.Properties().group(CREATIVE_TAB)));
