@@ -64,38 +64,23 @@ public class BatteryBoxBlock extends Block
 		}
 	}
 	/**
-	 * https://www.wolframalpha.com/input/?i=y+%3D+1+%2B+%2810-1%29*%28x-0.5%29%5E2+%2F+0.5%5E2%2C+x+from+0+to+0.5
-	 * outputBelowFalloff = min + (MAX-min)(energyPerc-falloff)^2 / falloff^2
 	 * @param world world
 	 * @param pos pos
 	 * @param state state
-	 * @param max Maximum output value; value when energy is zero
-	 * @param min Minimum output value; value when energy is above falloff
-	 * @param falloff Percentage of stored energy above which minimum output value is returned
-	 * @return A value in the range [max, min] when current energy percentage is in the range [0, falloff], and min when above falloff 
+	 * @param charging The value to return while the battery is gaining energy
+	 * @param discharging The value to return while the battery is losing energy
+	 * @return Either charging or discharging, depending on the battery's state
 	 */
-	public double getFallingAttenuation(IWorld world, BlockPos pos, BlockState state, double min, double max, double falloff)
+	public double getInvertableChargerValue(IWorld world, BlockPos pos, BlockState state, double charging, double discharging, double breakpoint)
 	{
 		TileEntity te = world.getTileEntity(pos);
 		if (te instanceof BatteryBoxTileEntity)
 		{
-			double energyPercentage = ((BatteryBoxTileEntity)te).getRelativeStoredEnergy();
-			if (energyPercentage > falloff)
-			{
-				return min;
-			}
-			else
-			{
-				double sqFalloffDivisor = 1/(falloff*falloff);
-				double outputDifference = max - min;
-				double percentageDiff = energyPercentage - falloff;
-				double sqPercentageDiff = percentageDiff*percentageDiff;
-				return min + outputDifference*sqPercentageDiff*sqFalloffDivisor;
-			}
+			return ((BatteryBoxTileEntity)te).getIsCharging(breakpoint) ? charging : discharging;
 		}
 		else
 		{
-			return max; // reasoning: return what we would have given a battery with no charge
+			return charging; // reasoning: return what we would have given a battery with no charge
 		}
 	}
 }

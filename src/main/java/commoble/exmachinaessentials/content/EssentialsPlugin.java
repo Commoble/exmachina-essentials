@@ -29,7 +29,7 @@ public class EssentialsPlugin implements Plugin
 		registry.registerConnectionType(new ResourceLocation("exmachinaessentials:wire_post"), json -> block -> WirePostBlock::getPotentialConnections);
 	
 		registry.registerDynamicCircuitElementProperty(new ResourceLocation("exmachinaessentials:rise_until_battery_charged"), EssentialsPlugin::readRiseUntilBatteryCharged);
-		registry.registerDynamicCircuitElementProperty(new ResourceLocation("exmachinaessentials:fall_until_battery_charged"), EssentialsPlugin::readFallUntilBatteryCharged);
+		registry.registerDynamicCircuitElementProperty(new ResourceLocation("exmachinaessentials:inverting_battery_charger"), EssentialsPlugin::readInvertingBatteryCharger);
 	}
 	
 	/**
@@ -50,12 +50,8 @@ public class EssentialsPlugin implements Plugin
 	 */
 	private static DynamicPropertyFactory readRiseUntilBatteryCharged(JsonObject json)
 	{
-		JsonElement maxElement = json.get("max");
-		double max = maxElement == null ? 0D : maxElement.getAsDouble();
-		
-		JsonElement falloffElement = json.get("falloff");
-		double rawFalloff = falloffElement == null ? 1D : falloffElement.getAsDouble();
-		double falloff = rawFalloff > 0 ? rawFalloff : 1D;
+		double max = getJsonDouble(json, "max", 0D);
+		double falloff = getJsonDouble(json, "falloff", 1D);
 		
 		return block -> block instanceof BatteryBoxBlock
 			? (world,pos,state) -> ((BatteryBoxBlock)block).getRisingAttenuation(world,pos,state,max,falloff)
@@ -66,37 +62,29 @@ public class EssentialsPlugin implements Plugin
 	 * Read a json in the following format (numbers are examples):
 	 * "dynamic_load":
 	 * {
-	 * 	"type": "exmachinaessentials:fall_until_battery_charged",
-	 * "max": 10.0,
-	 * "min": 1.0,
-	 * "falloff": 0.5
+	 * 	"type": "exmachinaessentials:inverting_battery_charger",
+	 * "charging": 20.0,
+	 * "discharging": 0.1
 	 * }
 	 * @param json A json object in the above format, where
-	 * "max" is a field containing the value of the property when the battery's stored energy is zero.
-	 * The max value will default to 0 if not specified.
-	 * "min" is a field containing the value of the proprety when the battery's stored energy is above the falloff value.
-	 * The min value will default to 0 if not specified.
-	 * "falloff" is the percentage of energy stored in the battery below which the output value will begin to increase.
-	 * The falloff value must be greater than 0 to avoid division errors. If falloff is not positive or not specified, it defaults to 1.0 (100%)
-	 * "min"
-	 * @return A dynamic property whose output scales quadratically from the max value to the min value when the battery's
-	 * stored energy is between 0 and the falloff value, and whose output is the min value when the stored energy is
-	 * above that
+	 * "charging" is a field containing the output value while the battery is gaining energy (default 0)
+	 * "discharging" is a field containing the output value while the battery is losing energy (default 0)
+	 * @return A dynamic property whose output depends on whether the battery is currently gaining or losing energy
 	 */
-	private static DynamicPropertyFactory readFallUntilBatteryCharged(JsonObject json)
+	private static DynamicPropertyFactory readInvertingBatteryCharger(JsonObject json)
 	{
-		JsonElement maxElement = json.get("max");
-		double max = maxElement == null ? 0D : maxElement.getAsDouble();
-		
-		JsonElement minElement = json.get("min");
-		double min = minElement == null ? 0D : minElement.getAsDouble();
-		
-		JsonElement falloffElement = json.get("falloff");
-		double rawFalloff = falloffElement == null ? 1D : falloffElement.getAsDouble();
-		double falloff = rawFalloff > 0 ? rawFalloff : 1D;
+		double charging = getJsonDouble(json, "charging", 0D);
+		double discharging = getJsonDouble(json, "discharging", 0D);
+		double breakpoint = getJsonDouble(json, "breakpoint", 0D);
 		
 		return block -> block instanceof BatteryBoxBlock
-			? (world,pos,state) -> ((BatteryBoxBlock)block).getFallingAttenuation(world,pos,state,min,max,falloff)
-			: (world,pos,state) -> max; // reasoning: return what the value would be given an uncharged battery
+			? (world,pos,state) -> ((BatteryBoxBlock)block).getInvertableChargerValue(world,pos,state,charging,discharging,breakpoint)
+			: (world,pos,state) -> charging; // reasoning: return what the value would be given an uncharged battery
+	}
+	
+	private static double getJsonDouble(JsonObject json, String name, double defaultIfNotPresent)
+	{
+		JsonElement element = json.get(name);
+		return element == null ? defaultIfNotPresent : element.getAsDouble();
 	}
 }

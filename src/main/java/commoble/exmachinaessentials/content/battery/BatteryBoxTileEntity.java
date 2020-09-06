@@ -22,6 +22,7 @@ public class BatteryBoxTileEntity extends TileEntity implements ITickableTileEnt
 	private static final String ENERGY = "energy";
 	
 	private double storedEnergy;
+	private boolean charging = true;
 	private LazyOptional<CircuitManager> managerHolder;
 
 	public BatteryBoxTileEntity()
@@ -43,6 +44,11 @@ public class BatteryBoxTileEntity extends TileEntity implements ITickableTileEnt
 	public double getRelativeStoredEnergy()
 	{
 		return this.storedEnergy / ExMachinaEssentials.INSTANCE.serverConfig.max_battery_box_energy.get();
+	}
+	
+	public boolean getIsCharging(double breakpoint)
+	{
+		return this.charging || breakpoint < this.getRelativeStoredEnergy();
 	}
 	
 	@Override
@@ -124,10 +130,13 @@ public class BatteryBoxTileEntity extends TileEntity implements ITickableTileEnt
 		double oldEnergy = this.storedEnergy;
 		double power = circuit.getPowerSuppliedTo(this.pos);
 		double gainedEnergy = power * 0.05D;	// power = energy/time, energy change this tick = power * tick duration
-		double newEnergy = MathHelper.clamp(oldEnergy + gainedEnergy, 0D, ExMachinaEssentials.INSTANCE.serverConfig.max_battery_box_energy.get());
-		if (newEnergy != oldEnergy)
+		double maxEnergy = ExMachinaEssentials.INSTANCE.serverConfig.max_battery_box_energy.get();
+		double newEnergy = MathHelper.clamp(oldEnergy + gainedEnergy, 0D, maxEnergy);
+		if (newEnergy != oldEnergy) // gainedEnergy != 0
 		{
 			this.storedEnergy = newEnergy;
+			this.charging = (gainedEnergy > -0.005 && newEnergy < maxEnergy) || newEnergy < 100; // we turn it on when it gets full 
+			
 			circuit.markNeedingDynamicUpdate();
 			BlockState state = this.getBlockState();
 			this.markDirty();
