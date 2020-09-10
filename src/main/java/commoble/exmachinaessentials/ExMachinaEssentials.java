@@ -11,6 +11,7 @@ import com.mojang.datafixers.util.Pair;
 
 import commoble.exmachinaessentials.client.ClientEvents;
 import commoble.exmachinaessentials.content.BlockRegistrar;
+import commoble.exmachinaessentials.content.ContainerRegistrar;
 import commoble.exmachinaessentials.content.ItemRegistrar;
 import commoble.exmachinaessentials.content.TileEntityRegistrar;
 import commoble.exmachinaessentials.content.solar_panel.ISolarPanelsInChunk;
@@ -98,7 +99,8 @@ public class ExMachinaEssentials
 		{
 			BlockRegistrar.BLOCKS,
 			ItemRegistrar.ITEMS,
-			TileEntityRegistrar.TYPES
+			TileEntityRegistrar.TYPES,
+			ContainerRegistrar.TYPES
 		};
 		
 		for (DeferredRegister<?> register : registers)

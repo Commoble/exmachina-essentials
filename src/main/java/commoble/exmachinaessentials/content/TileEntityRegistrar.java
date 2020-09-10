@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import commoble.exmachinaessentials.ExMachinaEssentials;
 import commoble.exmachinaessentials.Names;
 import commoble.exmachinaessentials.content.battery.BatteryBoxTileEntity;
+import commoble.exmachinaessentials.content.turbine.SteamTurbineTileEntity;
 import commoble.exmachinaessentials.content.wire_post.WirePostTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
@@ -28,4 +29,5 @@ public class TileEntityRegistrar
 	
 	public static final RegistryObject<TileEntityType<WirePostTileEntity>> WIRE_POST = registerType(Names.WIRE_POST, WirePostTileEntity::new, BlockRegistrar.WIRE_POST);
 	public static final RegistryObject<TileEntityType<BatteryBoxTileEntity>> BATTERY_BOX = registerType(Names.BATTERY_BOX, BatteryBoxTileEntity::new, BlockRegistrar.BATTERY_BOX);
+	public static final RegistryObject<TileEntityType<SteamTurbineTileEntity>> STEAM_TURBINE = registerType(Names.STEAM_TURBINE, SteamTurbineTileEntity::new, BlockRegistrar.STEAM_TURBINE);
 }

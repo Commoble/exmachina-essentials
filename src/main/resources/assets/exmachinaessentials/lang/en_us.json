@@ -4,9 +4,12 @@
 	"block.exmachinaessentials.wire_post": "Wire Post",
 	"block.exmachinaessentials.solar_panel": "Solar Panel",
 	"block.exmachinaessentials.battery_box": "Battery Box",
+	"block.exmachinaessentials.steam_turbine": "Steam Turbine",
 	
 	"item.exmachinaessentials.mondometer": "Mondometer",
 	"item.exmachinaessentials.wire_spool": "Wire Spool",
+	
+	"container.exmachinaessentials.steam_turbine": "Steam Turbine",
 	
 	"exmachinaessentials.mondometer.no_circuit": "No activity detected"
 }

@@ -116,7 +116,6 @@ public class BatteryBoxTileEntity extends TileEntity implements ITickableTileEnt
 		if (!this.world.isRemote)
 		{
 			this.managerHolder.ifPresent(this::tickCircuitManager);
-			System.out.println(this.storedEnergy);
 		}
 	}
 	
