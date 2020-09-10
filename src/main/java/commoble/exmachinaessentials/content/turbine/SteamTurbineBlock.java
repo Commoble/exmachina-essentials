@@ -3,11 +3,11 @@ package commoble.exmachinaessentials.content.turbine;
 import java.util.Random;
 
 import commoble.exmachinaessentials.content.TileEntityRegistrar;
+import commoble.exmachinaessentials.util.ItemHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.particles.ParticleTypes;
@@ -30,6 +30,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 public class SteamTurbineBlock extends Block
 {
@@ -124,10 +125,22 @@ public class SteamTurbineBlock extends Block
 		return true;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
-	public int getComparatorInputOverride(BlockState p_180641_1_, World p_180641_2_, BlockPos p_180641_3_)
+	@Deprecated
+	public int getComparatorInputOverride(BlockState state, World world, BlockPos pos)
 	{
-		return Container.calcRedstone(p_180641_2_.getTileEntity(p_180641_3_));
+		TileEntity te = world.getTileEntity(pos);
+		if (te instanceof SteamTurbineTileEntity)
+		{
+			return te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+				.map(ItemHelper::calcRedstoneFromItemHandler)
+				.orElseGet(() -> super.getComparatorInputOverride(state, world, pos));
+		}
+		else
+		{
+			return super.getComparatorInputOverride(state, world, pos);
+		}
 	}
 
 	@Override
@@ -138,7 +151,7 @@ public class SteamTurbineBlock extends Block
 		{
 			double xCenter = pos.getX() + 0.5D;
 			double yBottom = pos.getY();
-			double yCenter = yBottom + 0.5D;
+//			double yCenter = yBottom + 0.5D;
 			double zCenter = pos.getZ() + 0.5D;
 			if (rand.nextDouble() < 0.1D)
 			{
