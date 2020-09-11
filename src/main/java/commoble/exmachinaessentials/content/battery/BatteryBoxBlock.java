@@ -7,6 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 
 public class BatteryBoxBlock extends Block
 {
@@ -81,6 +82,28 @@ public class BatteryBoxBlock extends Block
 		else
 		{
 			return charging; // reasoning: return what we would have given a battery with no charge
+		}
+	}
+	
+	@Override
+	@Deprecated
+	public boolean hasComparatorInputOverride(BlockState p_149740_1_)
+	{
+		return true;
+	}
+
+	@Override
+	@Deprecated
+	public int getComparatorInputOverride(BlockState state, World world, BlockPos pos)
+	{
+		TileEntity te = world.getTileEntity(pos);
+		if (te instanceof BatteryBoxTileEntity)
+		{
+			return (int) (((BatteryBoxTileEntity)te).getRelativeStoredEnergy() * 15);
+		}
+		else
+		{
+			return super.getComparatorInputOverride(state, world, pos);
 		}
 	}
 }
